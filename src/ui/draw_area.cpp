@@ -15,7 +15,7 @@ DrawArea::DrawArea(QWidget *parent) :
     }
     m_mat.pushCell<WireCell>({ 3, 4 });
     m_mat.pushCell<WireCell>({ 3, 5 });
-    m_mat.pushCell<DataCell>({ 3, 0 }, 2048);
+    m_mat.pushCell<DataCell>({ 3, 0 }, 0x00181818187E7E00);
     m_mat.pushCell<ClockCell>({ 1, 0 }, 11);
 
     for (int i = 0; i < 8; ++i)

@@ -14,14 +14,14 @@ void BeltCell::paint(QPainter &painter) const {
     painter.drawRect(rect);
 
     painter.save();
-    painter.setClipRect(rect.adjusted(1, 1, -2, -2));
+    painter.setClipRect(rect.adjusted(1, 1, -1, -1));
     painter.setBrush(QColor(130, 130, 130));
     painter.setPen(QColor(130, 130, 130));
 
     const int tickMult = sliceRect.width() * (moveDir == Dir::RIGHT ? 1 : -1);
     const int tickOffset = m_animationTick * tickMult;
     const int iMult = M_ANIM_LENGTH * sliceRect.width();
-    for (int i = -1; i < 8; ++i) {
+    for (int i = -2; i < 10; ++i) {
         const int xOff = tickOffset + i * iMult;
         painter.drawRect(sliceRect.adjusted(xOff, 0, xOff, 0));
         // painter.drawRect(rect.x() + tickMult * m_animationTick + 6 * i, rect.y() + 4, 2, rect.height() - 8);

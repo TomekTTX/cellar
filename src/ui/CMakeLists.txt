@@ -4,7 +4,7 @@ qt_add_executable(cellar
     main.cpp
     mainwindow.cpp mainwindow.hpp mainwindow.ui
     draw_area.hpp draw_area.cpp
-    cell_item.hpp cell_item.cpp
+    stack_viewer.hpp stack_viewer.cpp
 )
 
 set_target_properties(cellar

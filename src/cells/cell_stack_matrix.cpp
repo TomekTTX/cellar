@@ -77,11 +77,20 @@ void CellStackMatrix::tick() {
     constexpr auto preMoveFunc = [](Cell &cell) { cell.preMove(); };
     constexpr auto tickFunc = [](Cell &cell) { cell.tick(); };
 
+    // Events phase 1 (stage)
     applyToAll(stageFunc);
+
+    // Events phase 2 (pre-move)
     applyToAll(preMoveFunc);
+
+    // Events phase 3 (move)
     while (performMove()) {
     }
+
+    // Events phase 4 (tick)
     applyToAll(tickFunc);
+
+    // Events phase 5 (destroy)
     for (ValueType &stack : *this) {
         for (int i = 0; i < stack.size(); ++i) {
             if (stack[i]->toBeDestroyed()) {

@@ -69,8 +69,4 @@ struct VecT {
 
 using Vec = VecT<int>;
 
-inline std::array<int, 4> unpackRect(const QRect &rect) {
-    return { rect.x(), rect.y(), rect.width(), rect.height() };
-}
-
 #endif  // POSITIONS_HPP

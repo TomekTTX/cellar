@@ -3,7 +3,6 @@ add_library(cells
     cell_data.hpp
     cell_stack_matrix.hpp cell_stack_matrix.cpp
     cell_types.hpp
-    draw_helpers.hpp
 
     cell.hpp cell.cpp
     empty_cell.hpp empty_cell.cpp
