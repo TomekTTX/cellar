@@ -3,7 +3,7 @@
 #include "cell_stack_matrix.hpp"
 
 void Cell::destroySelf() {
-    m_destroyFlag = true;  // m_env.extractCell(*this);
+    m_destroyFlag = true;  // m_env->extractCell(*this);
 }
 
 QRect Cell::cellRect() const {

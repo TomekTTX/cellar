@@ -9,7 +9,7 @@ private:
     bool m_moved = true;
 
 public:
-    SignalCell(Vec pos, CellStackMatrix &env);
+    SignalCell(Vec pos, CellStackMatrix *env);
 
     void paint(QPainter &painter, const QRect &rect) const override;
 

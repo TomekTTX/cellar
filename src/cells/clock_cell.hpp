@@ -8,7 +8,7 @@ private:
     uint m_delay, m_ctr = 0;
 
 public:
-    ClockCell(Vec pos, CellStackMatrix &env, uint delay = 8);
+    ClockCell(Vec pos, CellStackMatrix *env, uint delay = 8);
 
     inline bool isSolid() const override { return true; }
 

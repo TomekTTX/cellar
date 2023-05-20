@@ -58,7 +58,7 @@ struct DataPaintStruct {
     }
 };
 
-DataCell::DataCell(Vec pos, CellStackMatrix &env, const CellData::Type &data) :
+DataCell::DataCell(Vec pos, CellStackMatrix *env, const CellData::Type &data) :
     Cell(pos, env) {
     m_data = CellData(data);
 }

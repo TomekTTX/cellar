@@ -5,7 +5,7 @@
 
 class WireCell : public Cell {
 public:
-    WireCell(Vec pos, CellStackMatrix &env);
+    WireCell(Vec pos, CellStackMatrix *env);
 
     void paint(QPainter &painter, const QRect &rect) const override;
 

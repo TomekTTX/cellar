@@ -19,13 +19,13 @@ private:
 protected:
     // cell position
     Vec m_pos;
-    // reference to matrix the cell is placed in
-    CellStackMatrix &m_env;
+    // pointer to matrix the cell is placed in
+    CellStackMatrix *m_env;
     // direction the cell is planning to move
     Dir m_dir = Dir::NONE;
 
 public:
-    Cell(Vec pos, CellStackMatrix &env) :
+    Cell(Vec pos, CellStackMatrix *env) :
         m_pos(pos),
         m_env(env) {}
 
@@ -63,6 +63,8 @@ public:
     void direct(Dir d);
     void destroySelf();
     virtual void confirmMove();
+
+protected:
 };
 
 #endif  // CELL_HPP

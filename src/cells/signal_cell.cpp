@@ -2,7 +2,7 @@
 
 #include "cell_stack_matrix.hpp"
 
-SignalCell::SignalCell(Vec pos, CellStackMatrix &env) :
+SignalCell::SignalCell(Vec pos, CellStackMatrix *env) :
     Cell(pos, env) {}
 
 void SignalCell::paint(QPainter &painter, const QRect &rect) const {
@@ -11,7 +11,7 @@ void SignalCell::paint(QPainter &painter, const QRect &rect) const {
 }
 
 void SignalCell::stageDirection() {
-    CellStackMatrix::CellSeq targets, around = m_env.around(pos());
+    CellStackMatrix::CellSeq targets, around = m_env->around(pos());
 
     std::copy_if(around.begin(), around.end(), std::back_inserter(targets),
                  [this](Cell &c) { return c.isConductive() && (pos() - m_lastDir) != c.pos(); });
@@ -30,9 +30,9 @@ void SignalCell::tick() {
     CellStackMatrix::CellSeq seq;
 
     if (!cellStackIsConductive()) {
-        seq = m_env.at(pos());
+        seq = m_env->at(pos());
     } else if (!m_moved) {
-        seq = m_env.at(pos() + m_lastDir);
+        seq = m_env->at(pos() + m_lastDir);
     } else
         return;
 
@@ -42,7 +42,7 @@ void SignalCell::tick() {
 }
 
 bool SignalCell::cellStackIsConductive() const {
-    for (Cell &cell : m_env.at(pos()))
+    for (Cell &cell : m_env->at(pos()))
         if (cell.isConductive()) return true;
     return false;
 }

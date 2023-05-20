@@ -4,7 +4,7 @@
 
 #include "cell_stack_matrix.hpp"
 
-ClockCell::ClockCell(Vec pos, CellStackMatrix &env, uint delay) :
+ClockCell::ClockCell(Vec pos, CellStackMatrix *env, uint delay) :
     Cell(pos, env),
     m_delay(delay) {}
 
@@ -24,7 +24,7 @@ void ClockCell::paint(QPainter &painter, const QRect &rect) const {
 void ClockCell::tick() {
     if (++m_ctr < m_delay) return;
     m_ctr = 0;
-    for (Cell &cell : m_env.around(pos()))
+    for (Cell &cell : m_env->around(pos()))
         cell.receiveSignal();
 }
 

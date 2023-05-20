@@ -10,7 +10,7 @@ CellStackMatrix::CellStackMatrix(int64_t w, int64_t h) :
     m_data(w * h) {
     for (int y = 0; y < m_h; ++y)
         for (int x = 0; x < m_w; ++x)
-            operator()(x, y).push_back(std::make_unique<EmptyCell>(Vec{ x, y }, *this));
+            operator()(x, y).push_back(std::make_unique<EmptyCell>(Vec{ x, y }, this));
 }
 
 CellStackMatrix::CellSeq CellStackMatrix::at(Vec pos) {

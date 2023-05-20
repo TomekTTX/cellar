@@ -2,7 +2,7 @@
 
 #include "cell_stack_matrix.hpp"
 
-BeltCell::BeltCell(Vec pos, CellStackMatrix &env, Dir moveDir) :
+BeltCell::BeltCell(Vec pos, CellStackMatrix *env, Dir moveDir) :
     Cell(pos, env),
     moveDir(moveDir) {}
 
@@ -30,7 +30,7 @@ void BeltCell::paint(QPainter &painter, const QRect &rect) const {
 }
 
 void BeltCell::preMove() {
-    for (Cell &cell : m_env.at(pos() + Dir::UP))
+    for (Cell &cell : m_env->at(pos() + Dir::UP))
         cell.direct(moveDir);
 }
 
@@ -55,9 +55,9 @@ bool BeltCell::receiveSignal() {
     const int y = pos().y;
 
     moveDir = -moveDir;
-    for (int i = pos().x - 1; m_env.posValid(i, y) && invertStackDir(m_env(i, y)); --i)
+    for (int i = pos().x - 1; m_env->posValid(i, y) && invertStackDir((*m_env)(i, y)); --i)
         ;
-    for (int i = pos().x + 1; m_env.posValid(i, y) && invertStackDir(m_env(i, y)); ++i)
+    for (int i = pos().x + 1; m_env->posValid(i, y) && invertStackDir((*m_env)(i, y)); ++i)
         ;
 
     return true;

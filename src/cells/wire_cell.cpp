@@ -3,7 +3,7 @@
 #include "cell_stack_matrix.hpp"
 #include "signal_cell.hpp"
 
-WireCell::WireCell(Vec pos, CellStackMatrix &env) :
+WireCell::WireCell(Vec pos, CellStackMatrix *env) :
     Cell(pos, env) {}
 
 void WireCell::paint(QPainter &painter, const QRect &rect) const {
@@ -12,6 +12,6 @@ void WireCell::paint(QPainter &painter, const QRect &rect) const {
 }
 
 bool WireCell::receiveSignal() {
-    m_env.pushCell<SignalCell>(pos());
+    m_env->pushCell<SignalCell>(pos());
     return true;
 }

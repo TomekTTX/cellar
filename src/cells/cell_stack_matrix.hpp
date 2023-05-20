@@ -59,7 +59,7 @@ public:
     // constructs and places a cell in the matrix
     template <typename T, typename... Args>
     inline void pushCell(Vec pos, Args &&...args) {
-        (*this)[pos].push_back(std::make_unique<T>(pos, *this, args...));
+        (*this)[pos].push_back(std::make_unique<T>(pos, this, args...));
     }
 
     // finds and detaches the given cell from the matrix

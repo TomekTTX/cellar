@@ -11,7 +11,7 @@ private:
 public:
     Dir moveDir;
 
-    BeltCell(Vec pos, CellStackMatrix &env, Dir moveDir);
+    BeltCell(Vec pos, CellStackMatrix *env, Dir moveDir);
 
     inline bool isSolid() const override { return true; }
 

@@ -9,7 +9,7 @@ private:
     CellData m_data;
 
 public:
-    DataCell(Vec pos, CellStackMatrix &env, const CellData::Type &data = Empty());
+    DataCell(Vec pos, CellStackMatrix *env, const CellData::Type &data = Empty());
 
     inline bool isSolid() const override { return true; }
     inline bool isMovable() const override { return true; }
