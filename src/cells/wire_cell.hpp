@@ -5,7 +5,10 @@
 
 class WireCell : public Cell {
 public:
+    WireCell() = default;
     WireCell(Vec pos, CellStackMatrix *env);
+
+    inline Type type() const override { return Type::Wire; }
 
     void paint(QPainter &painter, const QRect &rect) const override;
 

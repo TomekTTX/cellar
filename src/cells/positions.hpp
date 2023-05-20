@@ -2,10 +2,9 @@
 #define POSITIONS_HPP
 
 #include <array>
+#include <cstdint>
 
-#include <QRect>
-
-enum Dir { NONE, UP, RIGHT, DOWN, LEFT, COUNT };
+enum Dir : int8_t { NONE, UP, RIGHT, DOWN, LEFT, COUNT };
 
 constexpr inline std::array<Dir, Dir::COUNT - Dir::UP> DIRS{ UP, RIGHT, DOWN, LEFT };
 

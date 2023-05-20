@@ -31,3 +31,23 @@ void ClockCell::tick() {
 bool ClockCell::receiveSignal() {
     return false;
 }
+
+uint ClockCell::serialSize() const {
+    return Cell::serialSize() + sizeof(m_delay) + sizeof(m_ctr);
+}
+
+std::vector<char> ClockCell::serialize() const {
+    auto bytes = Cell::serialize();
+    char *data = bytes.data() + Cell::serialSize();
+
+    copyIntoBytes(m_delay, &data);
+    copyIntoBytes(m_ctr, &data);
+
+    return bytes;
+}
+
+void ClockCell::deserializeFrom(const char **data) {
+    Cell::deserializeFrom(data);
+    copyFromBytes(m_delay, data);
+    copyFromBytes(m_ctr, data);
+}

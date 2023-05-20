@@ -100,6 +100,11 @@ void CellStackMatrix::tick() {
     }
 }
 
+void CellStackMatrix::pushCell(std::unique_ptr<Cell> &&cell) {
+    cell->setEnv(this);
+    (*this)[cell->pos()].push_back(std::move(cell));
+}
+
 std::unique_ptr<Cell> CellStackMatrix::extractCell(Cell &cell) {
     ValueType &stack = (*this)[cell.pos()];
 

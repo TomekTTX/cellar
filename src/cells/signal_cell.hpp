@@ -9,13 +9,20 @@ private:
     bool m_moved = true;
 
 public:
+    SignalCell() = default;
     SignalCell(Vec pos, CellStackMatrix *env);
+
+    inline Type type() const override { return Type::Signal; }
 
     void paint(QPainter &painter, const QRect &rect) const override;
 
     void stageDirection() override;
     void tick() override;
     void confirmMove() override;
+
+    uint serialSize() const override;
+    std::vector<char> serialize() const override;
+    void deserializeFrom(const char **data) override;
 
 private:
     bool cellStackIsConductive() const;

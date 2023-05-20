@@ -51,3 +51,23 @@ void SignalCell::confirmMove() {
     m_lastDir = dir();
     Cell::confirmMove();
 }
+
+uint SignalCell::serialSize() const {
+    return Cell::serialSize() + sizeof(m_lastDir) + sizeof(m_moved);
+}
+
+std::vector<char> SignalCell::serialize() const {
+    auto bytes = Cell::serialize();
+    char *data = bytes.data() + Cell::serialSize();
+
+    copyIntoBytes(m_lastDir, &data);
+    copyIntoBytes(m_moved, &data);
+
+    return bytes;
+}
+
+void SignalCell::deserializeFrom(const char **data) {
+    Cell::deserializeFrom(data);
+    copyFromBytes(m_lastDir, data);
+    copyFromBytes(m_moved, data);
+}

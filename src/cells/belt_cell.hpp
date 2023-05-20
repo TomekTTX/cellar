@@ -11,8 +11,10 @@ private:
 public:
     Dir moveDir;
 
+    BeltCell() = default;
     BeltCell(Vec pos, CellStackMatrix *env, Dir moveDir);
 
+    inline Type type() const override { return Type::Belt; }
     inline bool isSolid() const override { return true; }
 
     void paint(QPainter &painter, const QRect &rect) const override;
@@ -20,6 +22,10 @@ public:
     void preMove() override;
     void tick() override;
     bool receiveSignal() override;
+
+    uint serialSize() const override;
+    std::vector<char> serialize() const override;
+    void deserializeFrom(const char **data) override;
 };
 
 #endif  // BELTCELL_HPP

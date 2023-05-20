@@ -62,3 +62,23 @@ bool BeltCell::receiveSignal() {
 
     return true;
 }
+
+uint BeltCell::serialSize() const {
+    return Cell::serialSize() + sizeof(m_animationTick) + sizeof(moveDir);
+}
+
+std::vector<char> BeltCell::serialize() const {
+    auto bytes = Cell::serialize();
+    char *data = bytes.data() + Cell::serialSize();
+
+    copyIntoBytes(m_animationTick, &data);
+    copyIntoBytes(moveDir, &data);
+
+    return bytes;
+}
+
+void BeltCell::deserializeFrom(const char **data) {
+    Cell::deserializeFrom(data);
+    copyFromBytes(m_animationTick, data);
+    copyFromBytes(moveDir, data);
+}
