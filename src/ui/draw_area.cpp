@@ -2,11 +2,19 @@
 
 #include <memory>
 
+#include <QDebug>
+#include <QMouseEvent>
+
 #include "cell_types.hpp"
+
 
 DrawArea::DrawArea(QWidget *parent) :
     QWidget{ parent },
     m_mat(8, 8) {
+    testInit();
+}
+
+void DrawArea::testInit() {
     for (int i = 2; i < 6; ++i) {
         for (int j = 0; j < 4; ++j) {
             if ((i == 2 || i == 3) && j == 1) continue;
@@ -20,6 +28,25 @@ DrawArea::DrawArea(QWidget *parent) :
 
     for (int i = 0; i < 8; ++i)
         m_mat.pushCell<BeltCell>({ i, 6 }, Dir::RIGHT);
+}
+
+
+void DrawArea::tick() {
+    m_mat.tick();
+    m_sv->repaint();
+}
+
+void DrawArea::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        const auto point = event->position().toPoint();
+        const Vec cellPos = m_mat.mapPosToCell(point.x(), point.y());
+        // qDebug() << cellPos.x << cellPos.y;
+        if (m_mat.posValid(cellPos)) {
+            m_sv->setStack(m_mat[cellPos]);
+        } else {
+            m_sv->clear();
+        }
+    }
 }
 
 void DrawArea::paintEvent(QPaintEvent *event) {

@@ -5,9 +5,9 @@
 SignalCell::SignalCell(Vec pos, CellStackMatrix &env) :
     Cell(pos, env) {}
 
-void SignalCell::paint(QPainter &painter) const {
+void SignalCell::paint(QPainter &painter, const QRect &rect) const {
     painter.setBrush(Qt::red);
-    painter.drawRect(cellRect());
+    painter.drawRect(rect);
 }
 
 void SignalCell::stageDirection() {

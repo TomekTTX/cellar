@@ -12,7 +12,7 @@ public:
 
     inline bool isSolid() const override { return true; }
 
-    void paint(QPainter &painter) const override;
+    void paint(QPainter &painter, const QRect &rect) const override;
 
     void tick() override;
     bool receiveSignal() override;

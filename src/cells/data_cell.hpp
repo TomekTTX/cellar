@@ -16,7 +16,7 @@ public:
 
     inline void stageDirection() override { direct(Dir::DOWN); }
 
-    void paint(QPainter &painter) const override;
+    void paint(QPainter &painter, const QRect &rect) const override;
 };
 
 #endif  // DATACELL_HPP

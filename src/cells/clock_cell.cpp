@@ -8,14 +8,13 @@ ClockCell::ClockCell(Vec pos, CellStackMatrix &env, uint delay) :
     Cell(pos, env),
     m_delay(delay) {}
 
-void ClockCell::paint(QPainter &painter) const {
+void ClockCell::paint(QPainter &painter, const QRect &rect) const {
     constexpr int MARGIN = 1 + CELL_SIZE / 12;
     constexpr int DMARGIN = 1 + CELL_SIZE / 7;
     const int angle = 5760 * m_ctr / m_delay;
-    QRect rect = cellRect();
 
     painter.setBrush(QColor(100, 100, 100));
-    painter.drawRect(cellRect());
+    painter.drawRect(rect);
     painter.setBrush(QColor(240, 180, 20));
     painter.drawEllipse(rect.adjusted(MARGIN, MARGIN, -MARGIN, -MARGIN));
     painter.setBrush(QColor(50, 70, 230));

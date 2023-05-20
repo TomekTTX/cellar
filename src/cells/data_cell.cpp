@@ -63,7 +63,7 @@ DataCell::DataCell(Vec pos, CellStackMatrix &env, const CellData::Type &data) :
     m_data = CellData(data);
 }
 
-void DataCell::paint(QPainter &painter) const {
-    DataPaintStruct dps{ cellRect(), painter };
+void DataCell::paint(QPainter &painter, const QRect &rect) const {
+    DataPaintStruct dps{ rect, painter };
     std::visit(dps, m_data.val);
 }

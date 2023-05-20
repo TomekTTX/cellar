@@ -160,3 +160,7 @@ bool CellStackMatrix::seqHasSolid(const CellSeq &seq) {
         if (cell.isSolid()) return true;
     return false;
 }
+
+Vec CellStackMatrix::mapPosToCell(int x, int y) {
+    return { x / CELL_SIZE, y / CELL_SIZE };
+}

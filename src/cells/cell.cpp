@@ -6,6 +6,10 @@ void Cell::destroySelf() {
     m_destroyFlag = true;  // m_env.extractCell(*this);
 }
 
+QRect Cell::cellRect() const {
+    return { CELL_SIZE * m_pos.x, CELL_SIZE * m_pos.y, CELL_SIZE, CELL_SIZE };
+}
+
 void Cell::direct(Dir d) {
     if (isMovable()) m_dir = d;
 }

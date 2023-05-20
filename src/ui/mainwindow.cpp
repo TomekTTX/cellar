@@ -9,6 +9,11 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui(new Ui::MainWindow) {
     m_ui->setupUi(this);
     m_drawarea = m_ui->drawarea;
+    m_stackviewer = m_ui->stackviewer;
+    m_drawarea->setViewer(m_stackviewer);
+    m_stackviewer->setMinimumHeight(CELL_SIZE + 1);
+    m_stackviewer->setLabel(m_ui->stacklabel);
+
     new QShortcut(Qt::Key_Space, this, SLOT(tick()));
 }
 
@@ -17,7 +22,6 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::tick() {
-    // qDebug() << "TICK";
     m_drawarea->tick();
     m_drawarea->repaint();
 }

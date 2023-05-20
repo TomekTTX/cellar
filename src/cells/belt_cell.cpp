@@ -6,8 +6,7 @@ BeltCell::BeltCell(Vec pos, CellStackMatrix &env, Dir moveDir) :
     Cell(pos, env),
     moveDir(moveDir) {}
 
-void BeltCell::paint(QPainter &painter) const {
-    QRect rect = cellRect();
+void BeltCell::paint(QPainter &painter, const QRect &rect) const {
     QRect sliceRect = { rect.x(), rect.y() + CELL_SIZE / 8, CELL_SIZE / 16, rect.height() - CELL_SIZE / 4 };
 
     painter.setBrush(QColor(70, 70, 70));

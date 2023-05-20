@@ -15,7 +15,7 @@ public:
 
     inline bool isSolid() const override { return true; }
 
-    void paint(QPainter &painter) const override;
+    void paint(QPainter &painter, const QRect &rect) const override;
 
     void preMove() override;
     void tick() override;

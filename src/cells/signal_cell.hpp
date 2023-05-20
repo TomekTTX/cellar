@@ -11,7 +11,7 @@ private:
 public:
     SignalCell(Vec pos, CellStackMatrix &env);
 
-    void paint(QPainter &painter) const override;
+    void paint(QPainter &painter, const QRect &rect) const override;
 
     void stageDirection() override;
     void tick() override;

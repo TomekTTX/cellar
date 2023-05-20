@@ -7,7 +7,7 @@ class EmptyCell : public Cell {
 public:
     EmptyCell(Vec pos, CellStackMatrix &env);
 
-    void paint(QPainter &painter) const override;
+    void paint(QPainter &painter, const QRect &rect) const override;
 };
 
 #endif  // EMPTYCELL_HPP

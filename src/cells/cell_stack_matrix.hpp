@@ -51,6 +51,8 @@ public:
     bool posValid(int64_t x, int64_t y) const;
     bool posValid(Vec v) const;
 
+    static Vec mapPosToCell(int x, int y);
+
     // fires all events on cells
     void tick();
 
@@ -70,7 +72,6 @@ public:
 
 private:
     int performMove();
-    bool pushDetachedCell(ValueType::iterator &it, ValueType &source, ValueType &target);
 
     void applyToAll(const std::function<void(Cell &)> &func);
     static bool seqHasSolid(const CellSeq &seq);

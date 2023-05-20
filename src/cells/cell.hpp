@@ -14,6 +14,7 @@ private:
     // if this flag is set, the cell should not be accessed anymore
     // and should be destroyed after the current tick
     bool m_destroyFlag = false;
+    // mutable bool m_noDrawOffsetFlag = false;
 
 protected:
     // cell position
@@ -31,7 +32,7 @@ public:
     inline Vec pos() const { return m_pos; }
     inline Dir dir() const { return m_dir; }
     inline Vec targetPos() const { return pos() + dir(); }
-    inline QRect cellRect() const { return { CELL_SIZE * m_pos.x, CELL_SIZE * m_pos.y, CELL_SIZE, CELL_SIZE }; }
+    QRect cellRect() const;  // { return { CELL_SIZE * m_pos.x, CELL_SIZE * m_pos.y, CELL_SIZE, CELL_SIZE }; }
 
     // check if the cell acts solid to other cells
     virtual inline bool isSolid() const { return false; }
@@ -45,7 +46,8 @@ public:
     inline bool toBeDestroyed() const { return m_destroyFlag; }
 
     // paint self using the given painter
-    virtual void paint(QPainter &painter) const = 0;
+    virtual void paint(QPainter &painter, const QRect &rect) const = 0;
+    inline void paint(QPainter &painter) const { paint(painter, cellRect()); }
 
     // position setter
     inline void setPos(Vec newPos) { m_pos = newPos; }

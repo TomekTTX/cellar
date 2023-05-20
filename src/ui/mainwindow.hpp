@@ -5,6 +5,7 @@
 #include <QtOpenGLWidgets/QOpenGLWidget>
 
 #include "draw_area.hpp"
+#include "stack_viewer.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,5 +26,6 @@ public slots:
 private:
     Ui::MainWindow *m_ui;
     DrawArea *m_drawarea;
+    StackViewer *m_stackviewer;
 };
 #endif  // MAINWINDOW_HPP

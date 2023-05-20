@@ -58,13 +58,14 @@ struct VecT {
         }
         return *this;
     }
-    constexpr inline Dir toDir() {
+    constexpr inline Dir toDir() const {
         if (x == 1) return Dir::RIGHT;
         if (x == -1) return Dir::LEFT;
         if (y == 1) return Dir::DOWN;
         if (y == -1) return Dir::UP;
         return Dir::NONE;
     }
+    inline std::string str() const { return "(" + std::to_string(x) + ", " + std::to_string(y) + ")"; }
 };
 
 using Vec = VecT<int>;
