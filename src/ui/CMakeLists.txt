@@ -6,6 +6,7 @@ qt_add_executable(cellar
     draw_area.hpp draw_area.cpp
     stack_viewer.hpp stack_viewer.cpp
     cell_palette.hpp cell_palette.cpp
+    cell_viewer.hpp cell_viewer.cpp
 )
 
 set_target_properties(cellar

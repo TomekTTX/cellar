@@ -21,8 +21,13 @@ void SignalCell::stageDirection() {
         m_dir = (target.get().pos() - pos()).toDir();
         m_moved = true;
     } else {
-        m_dir = Dir::NONE;
-        m_moved = false;
+        if (m_lastDir == Dir::NONE) {
+            m_dir = DIRS[std::rand() & DIRS.size()];
+            m_moved = true;
+        } else {
+            m_dir = Dir::NONE;
+            m_moved = false;
+        }
     }
 }
 

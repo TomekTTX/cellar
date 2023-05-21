@@ -15,8 +15,10 @@ private:
     std::vector<std::unique_ptr<Cell>> m_cells;
     std::vector<std::vector<char>> m_serializedCells;
     std::vector<QRect> m_rects;
-    int m_spacing, m_cellsPerRow = 0, m_cellsPerCol = 0;
+    int m_spacing, m_hspacing, m_vspacing;
+    int m_cellsPerRow = 0, m_cellsPerCol = 0;
     int m_selected = -1, m_page = 0;
+    QFrame *m_frame;
     QLabel *m_pageLabel;
     QPushButton *m_prevBtn, *m_nextBtn;
     bool m_finalized = false;
@@ -29,12 +31,15 @@ public:
 
     void mousePressEvent(QMouseEvent *event) override;
 
-    void connectWidgets(QLabel *label, QPushButton *prev, QPushButton *next);
+    void connectWidgets(QLabel *label, QPushButton *prev, QPushButton *next, QFrame *frame);
     void updatePagination();
 
 public slots:
     void prevPage();
     void nextPage();
+
+signals:
+    void cellSelected(Cell *cell);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -46,8 +51,10 @@ private:
         m_cells.push_back(std::make_unique<T>(Vec(), nullptr, args...));
         m_serializedCells.push_back(m_cells.back()->serialize());
     }
+    void updateSpacing();
 
     int pointToIndex(QPoint p) const;
+    const Cell *getLocalCell() const;
 };
 
 #endif  // CELLPALETTE_HPP
