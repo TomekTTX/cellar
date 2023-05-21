@@ -16,24 +16,15 @@ DrawArea::DrawArea(QWidget *parent) :
 }
 
 void DrawArea::testInit() {
-    for (int i = 2; i < 6; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            if ((i == 2 || i == 3) && j == 1) continue;
-            m_mat.emplaceCell<WireCell>({ i, j });
-        }
-    }
-    m_mat.emplaceCell<WireCell>({ 3, 4 });
-    m_mat.emplaceCell<WireCell>({ 3, 5 });
-    m_mat.emplaceCell<DataCell>({ 3, 0 }, 0x007E7E1818181800);
-    m_mat.emplaceCell<DataCell>({ 3, 1 }, Color(240, 170, 30));
-    m_mat.emplaceCell<DataCell>({ 4, 2 }, Byte(170));
-    m_mat.emplaceCell<DataCell>({ 5, 1 }, Empty());
-    m_mat.emplaceCell<DataCell>({ 6, 0 }, "abcdef");
-    m_mat.emplaceCell<ClockCell>({ 1, 0 }, 11);
-
-    for (int i = 0; i < 8; ++i)
-        m_mat.emplaceCell<BeltCell>({ i, 6 }, Dir::RIGHT);
-    m_mat.pushCell(Cell::deserialize({ 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0 }));
+    for (int i = 0; i < 7; ++i)
+        m_mat.emplaceCell<BeltCell>({ i, 3 }, Dir::RIGHT);
+    for (int i = 0; i < 7; ++i)
+        m_mat.emplaceCell<BeltCell>({ i + 1, 5 }, Dir::LEFT);
+    for (int i = 0; i < 7; ++i)
+        m_mat.emplaceCell<BeltCell>({ i, 7 }, Dir::RIGHT);
+    m_mat.emplaceCell<DataCell>({ 0, 0 }, Color(255, 140, 140));
+    m_mat.emplaceCell<DataCell>({ 1, 3 }, Color(140, 255, 140));
+    m_mat.emplaceCell<DataCell>({ 2, 5 }, Color(140, 140, 255));
 }
 
 
@@ -54,18 +45,11 @@ void DrawArea::mousePressEvent(QMouseEvent *event) {
             m_sv->clear();
         }
     } else if (event->button() == Qt::RightButton) {
-        if (m_mat.posValid(cellPos)) {
-            std::vector<char> bytes;
-            std::stringstream ss{};
-            for (char c : (bytes = m_mat.serialize())) {
-                uchar &uc = reinterpret_cast<uchar &>(c);
-                ss << (uc <= 0xF ? "0" : "") << std::hex << ushort(uc) << ' ';
-            }
-            qDebug() << ss.str();
-
-            // auto desCell = Cell::deserialize(bytes);
-            // desCell->setPos(desCell->pos() + Dir::RIGHT);
-            // m_mat.pushCell(std::move(desCell));
+        if (!m_mat.posValid(cellPos)) return;
+        if (std::unique_ptr<Cell> cell = m_palette->getCell()) {
+            cell->setPos(cellPos);
+            m_mat.pushCell(std::move(cell));
+            repaint();
         }
     }
 }

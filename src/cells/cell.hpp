@@ -68,7 +68,7 @@ public:
     // event to run when a signal dies and activates the cell
     virtual inline bool receiveSignal() { return false; }
 
-    void direct(Dir d, int16_t force = 1);
+    void direct(Dir d, int8_t force = 1);
     void destroySelf();
     virtual void confirmMove();
 

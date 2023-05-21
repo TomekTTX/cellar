@@ -101,6 +101,7 @@ void CellStackMatrix::tick() {
 }
 
 void CellStackMatrix::pushCell(std::unique_ptr<Cell> &&cell) {
+    if (cell == nullptr) return;
     cell->setEnv(this);
     (*this)[cell->pos()].push_back(std::move(cell));
 }
