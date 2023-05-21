@@ -174,8 +174,8 @@ std::vector<char> CellStackMatrix::serialize() const {
     std::vector<char> bytes(sizeof(m_w) + sizeof(m_h));
     char *data = bytes.data();
 
-    Cell::copyIntoBytes(m_w, &data);
-    Cell::copyIntoBytes(m_h, &data);
+    copyIntoBytes(m_w, &data);
+    copyIntoBytes(m_h, &data);
     for (const ValueType &stack : *this)
         for (const auto &cell : stack)
             for (char byte : cell->serialize())
@@ -188,8 +188,8 @@ std::vector<char> CellStackMatrix::serialize() const {
 CellStackMatrix CellStackMatrix::deserialize(const char *data) {
     int64_t w, h;
 
-    Cell::copyFromBytes(w, &data);
-    Cell::copyFromBytes(h, &data);
+    copyFromBytes(w, &data);
+    copyFromBytes(h, &data);
     CellStackMatrix mat{ w, h };
     while (*data != -1)
         mat.pushCell(Cell::deserialize(&data));

@@ -4,6 +4,7 @@
 #include <QPainter>
 
 #include "positions.hpp"
+#include "util_funcs.hpp"
 
 constexpr int CELL_SIZE = 40;
 
@@ -14,7 +15,8 @@ private:
     // if this flag is set, the cell should not be accessed anymore
     // and should be destroyed after the current tick
     bool m_destroyFlag = false;
-    // mutable bool m_noDrawOffsetFlag = false;
+    // used for calculating the sum of all forces that affect a movable cell
+    int16_t m_force = 0;
 
 protected:
     // cell position
@@ -66,7 +68,7 @@ public:
     // event to run when a signal dies and activates the cell
     virtual inline bool receiveSignal() { return false; }
 
-    void direct(Dir d);
+    void direct(Dir d, int16_t force = 1);
     void destroySelf();
     virtual void confirmMove();
 
@@ -75,22 +77,6 @@ public:
     virtual void deserializeFrom(const char **data);
     static std::unique_ptr<Cell> deserialize(const char **data);
     static std::unique_ptr<Cell> deserialize(const std::vector<char> &bytes);
-
-    // serialization helper
-    template <typename T>
-    static void copyIntoBytes(const T &val, char **dst) {
-        const char *data = reinterpret_cast<const char *>(&val);
-        for (int i = 0; i < sizeof(T); ++i)
-            *((*dst)++) = data[i];
-    }
-
-    // deserialization helper
-    template <typename T>
-    static void copyFromBytes(T &val, const char **src) {
-        char *data = reinterpret_cast<char *>(&val);
-        for (int i = 0; i < sizeof(T); ++i)
-            data[i] = *((*src)++);
-    }
 };
 
 #endif  // CELL_HPP

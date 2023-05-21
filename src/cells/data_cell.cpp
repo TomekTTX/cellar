@@ -71,29 +71,29 @@ struct DataSizeChecker {
 struct DataSerializer {
     char **dst;
 
-    void operator()(const Empty &) { Cell::copyIntoBytes(DataType::EMPTY, dst); }
+    void operator()(const Empty &) { copyIntoBytes(DataType::EMPTY, dst); }
     void operator()(Byte b) {
         const uint8_t v = b;
-        Cell::copyIntoBytes(DataType::BYTE, dst);
-        Cell::copyIntoBytes(v, dst);
+        copyIntoBytes(DataType::BYTE, dst);
+        copyIntoBytes(v, dst);
     }
     void operator()(Color c) {
         const uint8_t v[] = { c.r, c.g, c.b };
-        Cell::copyIntoBytes(DataType::COLOR, dst);
-        Cell::copyIntoBytes(v[0], dst);
-        Cell::copyIntoBytes(v[1], dst);
-        Cell::copyIntoBytes(v[2], dst);
+        copyIntoBytes(DataType::COLOR, dst);
+        copyIntoBytes(v[0], dst);
+        copyIntoBytes(v[1], dst);
+        copyIntoBytes(v[2], dst);
     }
     void operator()(int64_t x) {
-        Cell::copyIntoBytes(DataType::INTEGER, dst);
-        Cell::copyIntoBytes(x, dst);
+        copyIntoBytes(DataType::INTEGER, dst);
+        copyIntoBytes(x, dst);
     }
     void operator()(const std::string &str) {
         const uint len = static_cast<uint>(str.length());
-        Cell::copyIntoBytes(DataType::STRING, dst);
-        Cell::copyIntoBytes(len, dst);
+        copyIntoBytes(DataType::STRING, dst);
+        copyIntoBytes(len, dst);
         for (char c : str)
-            Cell::copyIntoBytes(c, dst);
+            copyIntoBytes(c, dst);
     }
 };
 

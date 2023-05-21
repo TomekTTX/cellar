@@ -11,13 +11,30 @@ QRect Cell::cellRect() const {
     return { CELL_SIZE * m_pos.x, CELL_SIZE * m_pos.y, CELL_SIZE, CELL_SIZE };
 }
 
-void Cell::direct(Dir d) {
-    if (isMovable()) m_dir = d;
+void Cell::direct(Dir d, int8_t force) {
+    if (!isMovable()) return;
+
+    if (d == m_dir) {
+        m_force += force;
+    } else if (d == -m_dir) {
+        m_force -= force;
+    } else if (force >= m_force) {
+        m_dir = d;
+        m_force = force;
+    }
+
+    if (m_force == 0) {
+        m_dir = Dir::NONE;
+    } else if (m_force < 0) {
+        m_dir = -m_dir;
+        m_force = -m_force;
+    }
 }
 
 void Cell::confirmMove() {
     // m_pos += m_dir;
     m_dir = Dir::NONE;
+    m_force = 0;
 }
 
 uint Cell::serialSize() const {
