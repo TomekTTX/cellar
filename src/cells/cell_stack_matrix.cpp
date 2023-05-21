@@ -169,3 +169,30 @@ bool CellStackMatrix::seqHasSolid(const CellSeq &seq) {
 Vec CellStackMatrix::mapPosToCell(int x, int y) {
     return { x / CELL_SIZE, y / CELL_SIZE };
 }
+
+std::vector<char> CellStackMatrix::serialize() const {
+    std::vector<char> bytes(sizeof(m_w) + sizeof(m_h));
+    char *data = bytes.data();
+
+    Cell::copyIntoBytes(m_w, &data);
+    Cell::copyIntoBytes(m_h, &data);
+    for (const ValueType &stack : *this)
+        for (const auto &cell : stack)
+            for (char byte : cell->serialize())
+                bytes.push_back(byte);
+    bytes.push_back(-1);
+
+    return bytes;
+}
+
+CellStackMatrix CellStackMatrix::deserialize(const char *data) {
+    int64_t w, h;
+
+    Cell::copyFromBytes(w, &data);
+    Cell::copyFromBytes(h, &data);
+    CellStackMatrix mat{ w, h };
+    while (*data != -1)
+        mat.pushCell(Cell::deserialize(&data));
+
+    return mat;
+}

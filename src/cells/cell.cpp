@@ -45,16 +45,15 @@ void Cell::deserializeFrom(const char **data) {
 }
 
 template <typename T>
-std::unique_ptr<T> makeDeserialized(const char *data) {
+std::unique_ptr<T> makeDeserialized(const char **data) {
     std::unique_ptr<T> cell = std::make_unique<T>();
-    cell->deserializeFrom(&data);
+    cell->deserializeFrom(data);
     return cell;
 }
 
-std::unique_ptr<Cell> Cell::deserialize(const std::vector<char> &bytes) {
-    const char *data = bytes.data();
+std::unique_ptr<Cell> Cell::deserialize(const char **data) {
     Type serialType;
-    copyFromBytes(serialType, &data);
+    copyFromBytes(serialType, data);
 
     switch (serialType) {
     case Type::Empty: return makeDeserialized<EmptyCell>(data);
@@ -65,4 +64,9 @@ std::unique_ptr<Cell> Cell::deserialize(const std::vector<char> &bytes) {
     case Type::Clock: return makeDeserialized<ClockCell>(data);
     default: return nullptr;
     }
+}
+
+std::unique_ptr<Cell> Cell::deserialize(const std::vector<char> &bytes) {
+    const char *data = bytes.data();
+    return deserialize(&data);
 }

@@ -24,7 +24,7 @@ void DrawArea::testInit() {
     }
     m_mat.emplaceCell<WireCell>({ 3, 4 });
     m_mat.emplaceCell<WireCell>({ 3, 5 });
-    m_mat.emplaceCell<DataCell>({ 3, 0 }, 0x00181818187E7E00);
+    m_mat.emplaceCell<DataCell>({ 3, 0 }, 0x007E7E1818181800);
     m_mat.emplaceCell<DataCell>({ 3, 1 }, Color(240, 170, 30));
     m_mat.emplaceCell<DataCell>({ 4, 2 }, Byte(170));
     m_mat.emplaceCell<DataCell>({ 5, 1 }, Empty());
@@ -33,6 +33,7 @@ void DrawArea::testInit() {
 
     for (int i = 0; i < 8; ++i)
         m_mat.emplaceCell<BeltCell>({ i, 6 }, Dir::RIGHT);
+    m_mat.pushCell(Cell::deserialize({ 1, 0, 2, 0, 0, 0, 3, 0, 0, 0, 3, 0 }));
 }
 
 
@@ -56,7 +57,7 @@ void DrawArea::mousePressEvent(QMouseEvent *event) {
         if (m_mat.posValid(cellPos)) {
             std::vector<char> bytes;
             std::stringstream ss{};
-            for (char c : (bytes = m_mat[cellPos].back()->serialize())) {
+            for (char c : (bytes = m_mat.serialize())) {
                 uchar &uc = reinterpret_cast<uchar &>(c);
                 ss << (uc <= 0xF ? "0" : "") << std::hex << ushort(uc) << ' ';
             }

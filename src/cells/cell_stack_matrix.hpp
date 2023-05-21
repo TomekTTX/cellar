@@ -71,6 +71,9 @@ public:
     bool moveCell(Cell &cell, Vec targetPos);
     bool moveCell(std::unique_ptr<Cell> &cell, Vec targetPos);
 
+    std::vector<char> serialize() const;
+    static CellStackMatrix deserialize(const char *data);
+
 private:
     int performMove();
 

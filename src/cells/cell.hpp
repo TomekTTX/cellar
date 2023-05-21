@@ -73,6 +73,7 @@ public:
     virtual uint serialSize() const;
     virtual std::vector<char> serialize() const;
     virtual void deserializeFrom(const char **data);
+    static std::unique_ptr<Cell> deserialize(const char **data);
     static std::unique_ptr<Cell> deserialize(const std::vector<char> &bytes);
 
     // serialization helper
