@@ -28,6 +28,8 @@ public:
     // iterator funcs
     inline auto begin() { return m_data.begin(); }
     inline auto end() { return m_data.end(); }
+    inline auto begin() const { return m_data.cbegin(); }
+    inline auto end() const { return m_data.cend(); }
     inline auto cbegin() const { return m_data.cbegin(); }
     inline auto cend() const { return m_data.cend(); }
 
