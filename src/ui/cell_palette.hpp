@@ -3,21 +3,24 @@
 
 #include <vector>
 
+#include <QGridLayout>
 #include <QLabel>
 #include <QPushButton>
 #include <QWidget>
 
-#include "cell_types.hpp"
+#include "cell.hpp"
+#include "cell_viewer.hpp"
 
 class CellPalette : public QWidget {
     Q_OBJECT
 private:
     std::vector<std::unique_ptr<Cell>> m_cells;
     std::vector<std::vector<char>> m_serializedCells;
-    std::vector<QRect> m_rects;
-    int m_spacing, m_hspacing, m_vspacing;
-    int m_cellsPerRow = 0, m_cellsPerCol = 0;
-    int m_selected = -1, m_page = 0;
+    std::vector<CellViewer *> m_viewers;
+    int m_spacing = 10, m_cellsPerRow = 0, m_cellsPerCol = 0;
+    int m_selectionIndex = -1, m_page = 0;
+    Cell *m_selected;
+    QGridLayout *m_layout;
     QFrame *m_frame;
     QLabel *m_pageLabel;
     QPushButton *m_prevBtn, *m_nextBtn;
@@ -26,10 +29,11 @@ private:
 public:
     explicit CellPalette(QWidget *parent = nullptr);
 
+    inline int pageSize() const { return m_cellsPerCol * m_cellsPerRow; }
     int pageCount() const;
     std::unique_ptr<Cell> getCell() const;
 
-    void mousePressEvent(QMouseEvent *event) override;
+    // void mousePressEvent(QMouseEvent *event) override;
 
     void connectWidgets(QLabel *label, QPushButton *prev, QPushButton *next, QFrame *frame);
     void updatePagination();
@@ -37,12 +41,13 @@ public:
 public slots:
     void prevPage();
     void nextPage();
+    void select(Cell *cell);
 
 signals:
     void cellSelected(Cell *cell);
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
+    // void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
 private:
@@ -55,6 +60,7 @@ private:
 
     int pointToIndex(QPoint p) const;
     const Cell *getLocalCell() const;
+    static void cellClickFunc(QMouseEvent *event);
 };
 
 #endif  // CELLPALETTE_HPP

@@ -6,7 +6,7 @@
 #include <variant>
 
 struct Empty {
-    constexpr inline operator+(const Empty& other) const { return {}; }
+    constexpr inline Empty operator+(const Empty &other) const { return {}; }
 };
 
 struct Byte {

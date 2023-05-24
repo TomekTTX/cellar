@@ -3,7 +3,9 @@
 #include <QPainter>
 
 StackViewer::StackViewer(QWidget *parent) :
-    QWidget{ parent } {}
+    QWidget{ parent } {
+    setMinimumHeight(CELL_SIZE);
+}
 
 void StackViewer::clear() {
     m_cells = nullptr;
