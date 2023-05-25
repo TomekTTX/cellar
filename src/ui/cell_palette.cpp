@@ -10,6 +10,7 @@ CellPalette::CellPalette(QWidget *parent) :
     m_finalized(false),
     QWidget{ parent } {
     setLayout(m_layout = new QGridLayout(this));
+    setMinimumSize(CELL_SIZE + 2 * m_spacing + 1, CELL_SIZE + 2 * m_spacing + 1);
 
     addCell<EmptyCell>();
     addCell<WireCell>();
@@ -28,6 +29,12 @@ int CellPalette::pageCount() const {
 std::unique_ptr<Cell> CellPalette::getCell() const {
     if (!m_selected || m_selectionIndex < 0 || m_selectionIndex >= m_cells.size()) return nullptr;
     return Cell::deserialize(m_serializedCells[m_selectionIndex]);
+}
+
+void CellPalette::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        select(nullptr);
+    }
 }
 
 void CellPalette::connectWidgets(QLabel *label, QPushButton *prev, QPushButton *next, QFrame *frame) {
@@ -82,6 +89,7 @@ void CellPalette::select(Cell *cell) {
     emit cellSelected(m_selected);
 }
 
+// TODO this still produces a rare crash on resize for some reason
 void CellPalette::resizeEvent(QResizeEvent *event) {
     const int old_cpr = m_cellsPerRow, old_cpc = m_cellsPerCol;
     updateSpacing();
@@ -101,7 +109,6 @@ void CellPalette::resizeEvent(QResizeEvent *event) {
         }
     }
     updatePagination();
-    m_finalized = true;
 }
 
 int CellPalette::pointToIndex(QPoint p) const {

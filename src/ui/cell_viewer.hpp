@@ -9,9 +9,6 @@
 
 class CellViewer : public QWidget {
     Q_OBJECT
-public:
-    using OnClickFunc = std::function<void(QMouseEvent *)>;
-
 private:
     const Cell *m_cell = nullptr;
     QRect m_drawRect;

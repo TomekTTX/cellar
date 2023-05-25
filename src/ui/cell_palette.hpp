@@ -33,7 +33,7 @@ public:
     int pageCount() const;
     std::unique_ptr<Cell> getCell() const;
 
-    // void mousePressEvent(QMouseEvent *event) override;
+    void mousePressEvent(QMouseEvent *event) override;
 
     void connectWidgets(QLabel *label, QPushButton *prev, QPushButton *next, QFrame *frame);
     void updatePagination();

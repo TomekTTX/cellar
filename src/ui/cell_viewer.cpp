@@ -19,13 +19,13 @@ void CellViewer::mousePressEvent(QMouseEvent *event) {
 
 void CellViewer::paintEvent(QPaintEvent *event) {
     QPainter painter{ this };
+
     if (m_cell) {
         m_cell->paint(painter, m_drawRect);
-        return;
+    } else {
+        painter.setBrush(Qt::transparent);
+        painter.setPen(Qt::lightGray);
+        painter.drawRect(m_drawRect);
+        painter.drawLine(m_drawRect.bottomLeft(), m_drawRect.topRight());
     }
-
-    painter.setBrush(Qt::transparent);
-    painter.setPen(Qt::lightGray);
-    painter.drawRect(m_drawRect);
-    painter.drawLine(m_drawRect.bottomLeft(), m_drawRect.topRight());
 }
