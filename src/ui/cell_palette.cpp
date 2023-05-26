@@ -12,6 +12,22 @@ CellPalette::CellPalette(QWidget *parent) :
     setLayout(m_layout = new QGridLayout(this));
     setMinimumSize(CELL_SIZE + 2 * m_spacing + 1, CELL_SIZE + 2 * m_spacing + 1);
 
+    for (auto &viewer : m_viewers) {
+        viewer = new CellViewer(this);
+        viewer->showCell(nullptr);
+    }
+
+    for (int i = 0; i < MAX_CELL_COUNT; ++i) {
+        for (int j = 0; j < MAX_CELL_COUNT; ++j) {
+            const int arrIndex = MAX_CELL_COUNT * i + j;
+            m_viewers[arrIndex]->hide();
+            m_layout->addWidget(m_viewers[arrIndex], i, j);
+            // clang-format off
+            connect(m_viewers[arrIndex], SIGNAL(clicked(Cell*)), SLOT(select(Cell*)));
+            // clang-format on
+        }
+    }
+
     addCell<EmptyCell>();
     addCell<WireCell>();
     addCell<SignalCell>();
@@ -53,14 +69,15 @@ void CellPalette::updatePagination() {
     m_nextBtn->setEnabled(m_page < pages - 1);
     m_pageLabel->setText(QString::fromStdString(std::to_string(m_page + 1) + '/' + std::to_string(pages)));
 
-    int i = 0;
-    while (i < ps && i + startInd < m_cells.size()) {
-        m_viewers[i]->showCell(m_cells[i + startInd].get());
-        ++i;
+    int cellInd = 0, viewerInd = -1;
+    while (++viewerInd < m_viewers.size() && cellInd < ps && cellInd + startInd < m_cells.size()) {
+        if (!m_viewers[viewerInd]->isVisible()) continue;
+        m_viewers[viewerInd]->showCell(m_cells[cellInd + startInd].get());
+        ++cellInd;
     }
 
-    while (i < ps) {
-        m_viewers[i++]->showCell(nullptr);
+    while (viewerInd < MAX_CELL_COUNT) {
+        m_viewers[viewerInd++]->showCell(nullptr);
     }
 }
 
@@ -95,17 +112,11 @@ void CellPalette::resizeEvent(QResizeEvent *event) {
     updateSpacing();
     if (old_cpr == m_cellsPerRow && old_cpc == m_cellsPerCol) return;
 
-    qDeleteAll(findChildren<CellViewer *>(QString(), Qt::FindDirectChildrenOnly));
+    for (int y = 0; y < MAX_CELL_COUNT; ++y) {
+        for (int x = 0; x < MAX_CELL_COUNT; ++x) {
+            const int arrIndex = MAX_CELL_COUNT * y + x;
 
-    m_viewers.clear();
-    m_viewers.reserve(pageSize());
-    for (int y = 0; y < m_cellsPerCol; ++y) {
-        for (int x = 0; x < m_cellsPerRow; ++x) {
-            m_viewers.push_back(new CellViewer(this));
-            m_layout->addWidget(m_viewers.back(), y, x);
-            // clang-format off
-            connect(m_viewers.back(), SIGNAL(clicked(Cell*)), SLOT(select(Cell*)));
-            // clang-format on
+            m_viewers[arrIndex]->setVisible(x < m_cellsPerRow && y < m_cellsPerCol);
         }
     }
     updatePagination();

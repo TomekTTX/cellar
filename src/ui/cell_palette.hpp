@@ -14,9 +14,16 @@
 class CellPalette : public QWidget {
     Q_OBJECT
 private:
+    static constexpr int MAX_CELL_COUNT = 16;
+    struct PaletteCell {
+        std::unique_ptr<Cell> cell;
+        std::vector<char> bytes;
+    };
+
     std::vector<std::unique_ptr<Cell>> m_cells;
     std::vector<std::vector<char>> m_serializedCells;
-    std::vector<CellViewer *> m_viewers;
+    // std::vector<CellViewer *> m_viewers;
+    std::array<CellViewer *, MAX_CELL_COUNT * MAX_CELL_COUNT> m_viewers;
     int m_spacing = 10, m_cellsPerRow = 0, m_cellsPerCol = 0;
     int m_selectionIndex = -1, m_page = 0;
     Cell *m_selected;
