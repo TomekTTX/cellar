@@ -7,23 +7,21 @@
 
 CellPalette::CellPalette(QWidget *parent) :
     m_spacing(CELL_SIZE / 3),
-    m_finalized(false),
     QWidget{ parent } {
     setLayout(m_layout = new QGridLayout(this));
     setMinimumSize(CELL_SIZE + 2 * m_spacing + 1, CELL_SIZE + 2 * m_spacing + 1);
 
     for (auto &viewer : m_viewers) {
         viewer = new CellViewer(this);
+        viewer->hide();
         viewer->showCell(nullptr);
     }
 
-    for (int i = 0; i < MAX_CELL_COUNT; ++i) {
-        for (int j = 0; j < MAX_CELL_COUNT; ++j) {
-            const int arrIndex = MAX_CELL_COUNT * i + j;
-            m_viewers[arrIndex]->hide();
-            m_layout->addWidget(m_viewers[arrIndex], i, j);
+    for (int x = 0, i = 0; x < MAX_CELL_COUNT; ++x) {
+        for (int y = 0; y < MAX_CELL_COUNT; ++y, ++i) {
+            m_layout->addWidget(m_viewers[i], x, y);
             // clang-format off
-            connect(m_viewers[arrIndex], SIGNAL(clicked(Cell*)), SLOT(select(Cell*)));
+            connect(m_viewers[i], SIGNAL(clicked(Cell*)), SLOT(select(Cell*)));
             // clang-format on
         }
     }
@@ -69,14 +67,19 @@ void CellPalette::updatePagination() {
     m_nextBtn->setEnabled(m_page < pages - 1);
     m_pageLabel->setText(QString::fromStdString(std::to_string(m_page + 1) + '/' + std::to_string(pages)));
 
+    const int viewerLimit = static_cast<int>(m_viewers.size());
+    const int cellLimit = static_cast<int>(m_cells.size());
     int cellInd = 0, viewerInd = -1;
-    while (++viewerInd < m_viewers.size() && cellInd < ps && cellInd + startInd < m_cells.size()) {
-        if (!m_viewers[viewerInd]->isVisible()) continue;
-        m_viewers[viewerInd]->showCell(m_cells[cellInd + startInd].get());
-        ++cellInd;
+    while (++viewerInd < viewerLimit && cellInd < ps && cellInd + startInd < cellLimit) {
+        if (!m_viewers[viewerInd]->isVisible()) {
+            m_viewers[viewerInd]->showCell(nullptr);
+        } else {
+            m_viewers[viewerInd]->showCell(m_cells[cellInd + startInd].get());
+            ++cellInd;
+        }
     }
 
-    while (viewerInd < MAX_CELL_COUNT) {
+    while (viewerInd < viewerLimit) {
         m_viewers[viewerInd++]->showCell(nullptr);
     }
 }
@@ -100,30 +103,30 @@ void CellPalette::select(Cell *cell) {
         m_selected = nullptr;
         m_selectionIndex = -1;
     } else {
+        const int baseIndex = static_cast<int>(it - m_viewers.begin());
+        const auto [col, row] = std::div(baseIndex, MAX_CELL_COUNT);
+        const int realIndex = col * m_cellsPerRow + row;
         m_selected = cell;
-        m_selectionIndex = static_cast<int>(it - m_viewers.begin()) + m_page * pageSize();
+        m_selectionIndex = realIndex + m_page * pageSize();
     }
     emit cellSelected(m_selected);
 }
 
-// TODO this still produces a rare crash on resize for some reason
 void CellPalette::resizeEvent(QResizeEvent *event) {
     const int old_cpr = m_cellsPerRow, old_cpc = m_cellsPerCol;
     updateSpacing();
     if (old_cpr == m_cellsPerRow && old_cpc == m_cellsPerCol) return;
 
-    for (int y = 0; y < MAX_CELL_COUNT; ++y) {
-        for (int x = 0; x < MAX_CELL_COUNT; ++x) {
-            const int arrIndex = MAX_CELL_COUNT * y + x;
-
-            m_viewers[arrIndex]->setVisible(x < m_cellsPerRow && y < m_cellsPerCol);
+    for (int y = 0, i = 0; y < MAX_CELL_COUNT; ++y) {
+        for (int x = 0; x < MAX_CELL_COUNT; ++x, ++i) {
+            m_viewers[i]->setVisible(x < m_cellsPerRow && y < m_cellsPerCol);
         }
     }
     updatePagination();
 }
 
-int CellPalette::pointToIndex(QPoint p) const {
-    return -1;
+void CellPalette::showEvent(QShowEvent *event) {
+    updatePagination();
 }
 
 void CellPalette::updateSpacing() {
