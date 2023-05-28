@@ -13,7 +13,7 @@ public:
     void paint(QPainter &painter, const QRect &rect) const override;
 
     inline bool isConductive() const override { return true; }
-    bool receiveSignal() override;
+    bool receiveSignal(Dir from = Dir::NONE) override;
 };
 
 #endif  // WIRECELL_HPP

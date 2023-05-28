@@ -25,10 +25,10 @@ void ClockCell::tick() {
     if (++m_ctr < m_delay) return;
     m_ctr = 0;
     for (Cell &cell : m_env->around(pos()))
-        cell.receiveSignal();
+        cell.receiveSignal((pos() - cell.pos()).toDir());
 }
 
-bool ClockCell::receiveSignal() {
+bool ClockCell::receiveSignal(Dir from) {
     return false;
 }
 

@@ -21,7 +21,7 @@ public:
 
     void preMove() override;
     void tick() override;
-    bool receiveSignal() override;
+    bool receiveSignal(Dir from = Dir::NONE) override;
 
     uint serialSize() const override;
     std::vector<char> serialize() const override;

@@ -5,6 +5,11 @@
 SignalCell::SignalCell(Vec pos, CellStackMatrix *env) :
     Cell(pos, env) {}
 
+SignalCell::SignalCell(Vec pos, CellStackMatrix *env, Dir orientation) :
+    SignalCell(pos, env) {
+    m_lastDir = orientation;
+}
+
 void SignalCell::paint(QPainter &painter, const QRect &rect) const {
     painter.setBrush(Qt::red);
     painter.drawRect(rect);
@@ -22,7 +27,7 @@ void SignalCell::stageDirection() {
         m_moved = true;
     } else {
         if (m_lastDir == Dir::NONE) {
-            m_dir = DIRS[std::rand() & DIRS.size()];
+            m_dir = DIRS[std::rand() % DIRS.size()];
             m_moved = true;
         } else {
             m_dir = Dir::NONE;
@@ -42,7 +47,7 @@ void SignalCell::tick() {
         return;
 
     for (Cell &cell : seq)
-        cell.receiveSignal();
+        cell.receiveSignal(-m_lastDir);
     destroySelf();
 }
 

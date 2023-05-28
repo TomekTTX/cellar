@@ -11,6 +11,7 @@ private:
 public:
     SignalCell() = default;
     SignalCell(Vec pos, CellStackMatrix *env);
+    SignalCell(Vec pos, CellStackMatrix *env, Dir orientation);
 
     inline Type type() const override { return Type::Signal; }
 

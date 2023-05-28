@@ -3,6 +3,7 @@
 
 #include <array>
 #include <cstdint>
+#include <string>
 
 enum Dir : int8_t { NONE, UP, RIGHT, DOWN, LEFT, COUNT };
 

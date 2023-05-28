@@ -11,7 +11,7 @@ void WireCell::paint(QPainter &painter, const QRect &rect) const {
     painter.drawRect(rect);
 }
 
-bool WireCell::receiveSignal() {
-    m_env->emplaceCell<SignalCell>(pos());
+bool WireCell::receiveSignal(Dir from) {
+    m_env->emplaceCell<SignalCell>(pos(), -from);
     return true;
 }

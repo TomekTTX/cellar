@@ -51,7 +51,7 @@ bool invertStackDir(CellStackMatrix::ValueType &stack) {
     return ctr != 0;
 }
 
-bool BeltCell::receiveSignal() {
+bool BeltCell::receiveSignal(Dir from) {
     const int y = pos().y;
 
     moveDir = -moveDir;

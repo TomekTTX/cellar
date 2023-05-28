@@ -66,7 +66,7 @@ public:
     // events phase 4: do various cell-specific actions
     virtual inline void tick() {}
     // event to run when a signal dies and activates the cell
-    virtual inline bool receiveSignal() { return false; }
+    virtual inline bool receiveSignal(Dir from = Dir::NONE) { return false; }
 
     void direct(Dir d, int8_t force = 1);
     void destroySelf();
