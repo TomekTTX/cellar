@@ -19,6 +19,10 @@ public:
     void setStack(const CellStackMatrix::ValueType &stack);
     inline void setLabel(QLabel *label) { m_label = label; }
 
+    void mousePressEvent(QMouseEvent *event) override;
+signals:
+    void clicked(Cell *cell);
+
 protected:
     void paintEvent(QPaintEvent *event) override;
 };

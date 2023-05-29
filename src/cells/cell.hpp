@@ -15,6 +15,8 @@ private:
     // if this flag is set, the cell should not be accessed anymore
     // and should be destroyed after the current tick
     bool m_destroyFlag = false;
+    // flag for showing the selection mark on the cell
+    bool m_selected = false;
     // used for calculating the sum of all forces that affect a movable cell
     int16_t m_force = 0;
 
@@ -51,14 +53,15 @@ public:
     // check if the cell should be removed in events phase 5
     inline bool toBeDestroyed() const { return m_destroyFlag; }
 
-    // paint self using the given painter
-    virtual void paint(QPainter &painter, const QRect &rect) const = 0;
-    inline void paint(QPainter &painter) const { paint(painter, cellRect()); }
+    void paint(QPainter &painter) const;
+    void paint(QPainter &painter, const QRect &rect) const;
 
     // position setter
     inline void setPos(Vec newPos) { m_pos = newPos; }
     // environment setter
     inline void setEnv(CellStackMatrix *mat) { m_env = mat; }
+    // selected setter
+    inline void setSelected(bool v) { m_selected = v; }
     // events phase 1: choose move direction
     virtual inline void stageDirection() { m_dir = Dir::NONE; }
     // events phase 2: re-evaluate move direction of this and/or other cells
@@ -77,6 +80,9 @@ public:
     virtual void deserializeFrom(const char **data);
     static std::unique_ptr<Cell> deserialize(const char **data);
     static std::unique_ptr<Cell> deserialize(const std::vector<char> &bytes);
+
+protected:
+    virtual void paintSelf(QPainter &painter, const QRect &rect) const = 0;
 };
 
 #endif  // CELL_HPP

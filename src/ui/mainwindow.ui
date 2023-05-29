@@ -264,12 +264,18 @@
    <extends>QWidget</extends>
    <header>draw_area.hpp</header>
    <container>1</container>
+   <slots>
+    <slot>select(Cell*)</slot>
+   </slots>
   </customwidget>
   <customwidget>
    <class>StackViewer</class>
    <extends>QWidget</extends>
    <header>stack_viewer.hpp</header>
    <container>1</container>
+   <slots>
+    <signal>clicked(Cell*)</signal>
+   </slots>
   </customwidget>
   <customwidget>
    <class>CellPalette</class>
@@ -337,8 +343,24 @@
      <y>133</y>
     </hint>
     <hint type="destinationlabel">
-     <x>910</x>
-     <y>84</y>
+     <x>949</x>
+     <y>78</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>stackviewer</sender>
+   <signal>clicked(Cell*)</signal>
+   <receiver>drawarea</receiver>
+   <slot>select(Cell*)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>366</x>
+     <y>602</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>355</x>
+     <y>392</y>
     </hint>
    </hints>
   </connection>

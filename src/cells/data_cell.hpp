@@ -18,7 +18,7 @@ public:
 
     inline void stageDirection() override { direct(Dir::DOWN); }
 
-    void paint(QPainter &painter, const QRect &rect) const override;
+    void paintSelf(QPainter &painter, const QRect &rect) const override;
 
     uint serialSize() const override;
     std::vector<char> serialize() const override;

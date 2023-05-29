@@ -29,6 +29,7 @@ void DrawArea::testInit() {
 
 
 void DrawArea::tick() {
+    select(nullptr);
     m_mat.tick();
     m_sv->repaint();
 }
@@ -38,7 +39,6 @@ void DrawArea::mousePressEvent(QMouseEvent *event) {
     const Vec cellPos = m_mat.mapPosToCell(point.x(), point.y());
 
     if (event->button() == Qt::LeftButton) {
-        // qDebug() << cellPos.x << cellPos.y;
         if (m_mat.posValid(cellPos)) {
             m_sv->setStack(m_mat[cellPos]);
         } else {
@@ -54,9 +54,43 @@ void DrawArea::mousePressEvent(QMouseEvent *event) {
     }
 }
 
+void DrawArea::mouseDoubleClickEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        const auto point = event->pos();
+        const Vec cellPos = m_mat.mapPosToCell(point.x(), point.y());
+        if (m_mat.posValid(cellPos)) {
+            select(m_mat[cellPos].back().get());
+        } else
+            select(nullptr);
+    }
+}
+
+void DrawArea::select(Cell *cell) {
+    if (m_selectedCell) {
+        m_selectedCell->setSelected(false);
+    }
+    if (cell) {
+        cell->setSelected(true);
+    }
+    m_selectedCell = cell;
+    m_sv->repaint();
+    repaint();
+}
+
+void DrawArea::deleteSelected() {
+    if (m_selectedCell) {
+        m_mat.extractCell(*m_selectedCell);
+        m_selectedCell = nullptr;
+    }
+    select(nullptr);
+}
+
 void DrawArea::paintEvent(QPaintEvent *event) {
     QPainter painter{ this };
 
-    for (const auto &stack : m_mat)
-        stack.back()->paint(painter);
+    for (const auto &stack : m_mat) {
+        if (!stack.empty()) {
+            stack.back()->paint(painter);
+        }
+    }
 }

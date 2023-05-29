@@ -6,7 +6,7 @@
 WireCell::WireCell(Vec pos, CellStackMatrix *env) :
     Cell(pos, env) {}
 
-void WireCell::paint(QPainter &painter, const QRect &rect) const {
+void WireCell::paintSelf(QPainter &painter, const QRect &rect) const {
     painter.setBrush(QColor{ 130, 20, 20 });
     painter.drawRect(rect);
 }

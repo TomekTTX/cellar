@@ -10,7 +10,7 @@ public:
 
     inline Type type() const override { return Type::Wire; }
 
-    void paint(QPainter &painter, const QRect &rect) const override;
+    void paintSelf(QPainter &painter, const QRect &rect) const override;
 
     inline bool isConductive() const override { return true; }
     bool receiveSignal(Dir from = Dir::NONE) override;

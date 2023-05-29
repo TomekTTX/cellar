@@ -10,7 +10,7 @@ SignalCell::SignalCell(Vec pos, CellStackMatrix *env, Dir orientation) :
     m_lastDir = orientation;
 }
 
-void SignalCell::paint(QPainter &painter, const QRect &rect) const {
+void SignalCell::paintSelf(QPainter &painter, const QRect &rect) const {
     painter.setBrush(Qt::red);
     painter.drawRect(rect);
 }

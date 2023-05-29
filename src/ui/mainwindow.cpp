@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->palette->connectWidgets(m_ui->pageLabel, m_ui->prevButton, m_ui->nextButton, m_ui->paletteSelection);
 
     new QShortcut(Qt::Key_Space, this, SLOT(tick()));
+    new QShortcut(Qt::Key_Delete, m_drawarea, SLOT(deleteSelected()));
 }
 
 MainWindow::~MainWindow() {

@@ -3,7 +3,7 @@
 EmptyCell::EmptyCell(Vec pos, CellStackMatrix *env) :
     Cell(pos, env) {}
 
-void EmptyCell::paint(QPainter &painter, const QRect &rect) const {
+void EmptyCell::paintSelf(QPainter &painter, const QRect &rect) const {
     painter.setBrush(Qt::white);
     painter.drawRect(rect);
 }

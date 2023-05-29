@@ -10,7 +10,7 @@ public:
 
     inline Type type() const override { return Type::Empty; }
 
-    void paint(QPainter &painter, const QRect &rect) const override;
+    void paintSelf(QPainter &painter, const QRect &rect) const override;
 
     // std::vector<char> serialize() const override;
     // void deserializeFrom(const char *data) override;

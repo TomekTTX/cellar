@@ -17,7 +17,7 @@ public:
     inline Type type() const override { return Type::Belt; }
     inline bool isSolid() const override { return true; }
 
-    void paint(QPainter &painter, const QRect &rect) const override;
+    void paintSelf(QPainter &painter, const QRect &rect) const override;
 
     void preMove() override;
     void tick() override;

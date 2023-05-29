@@ -15,7 +15,7 @@ public:
 
     inline Type type() const override { return Type::Signal; }
 
-    void paint(QPainter &painter, const QRect &rect) const override;
+    void paintSelf(QPainter &painter, const QRect &rect) const override;
 
     void stageDirection() override;
     void tick() override;

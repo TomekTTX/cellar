@@ -102,7 +102,7 @@ DataCell::DataCell(Vec pos, CellStackMatrix *env, const CellData::Type &data) :
     m_data = CellData(data);
 }
 
-void DataCell::paint(QPainter &painter, const QRect &rect) const {
+void DataCell::paintSelf(QPainter &painter, const QRect &rect) const {
     DataPainter dp{ rect, painter };
     std::visit(dp, m_data.val);
 }

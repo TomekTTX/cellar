@@ -53,8 +53,6 @@ public:
     bool posValid(int64_t x, int64_t y) const;
     bool posValid(Vec v) const;
 
-    static Vec mapPosToCell(int x, int y);
-
     // fires all events on cells
     void tick();
 
@@ -75,6 +73,8 @@ public:
 
     std::vector<char> serialize() const;
     static CellStackMatrix deserialize(const char *data);
+
+    static Vec mapPosToCell(int x, int y);
 
 private:
     int performMove();

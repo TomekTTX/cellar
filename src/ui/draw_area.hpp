@@ -14,6 +14,7 @@ private:
     CellStackMatrix m_mat;
     StackViewer *m_sv;
     CellPalette *m_palette;
+    Cell *m_selectedCell = nullptr;
 
 public:
     explicit DrawArea(QWidget *parent = nullptr);
@@ -23,6 +24,11 @@ public:
     void tick();
 
     void mousePressEvent(QMouseEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+
+public slots:
+    void select(Cell *cell);
+    void deleteSelected();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
