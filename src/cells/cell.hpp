@@ -12,7 +12,7 @@ class CellStackMatrix;
 class Cell {
 private:
     // if this flag is set, the cell should not be accessed anymore
-    // it will be destroyed in events phase 5
+    // it will be destroyed in events phase 6
     bool m_destroyFlag = false;
     // flag for showing the selection mark on the cell
     bool m_selected = false;
@@ -28,7 +28,28 @@ protected:
     Dir m_dir = Dir::NONE;
 
 public:
-    enum class Type : int16_t { Empty, Wire, Signal, Data, Belt, Clock };
+    enum class Type : int16_t {
+        Empty,
+        Wire,
+        Signal,
+        Data,
+        Belt,
+        Clock,
+        Ice,
+        Wall,
+        Fan,
+        Piston,
+        PistonArm,
+        Duplicator,
+        Relayer,
+        Door,
+        LogicGate,
+        Void,
+        Teleport,
+        Transmitter,
+        Merger,
+        Splitter,
+    };
     using Serialized = std::vector<char>;
 
     Cell() = default;
@@ -68,14 +89,17 @@ public:
     // events phase 1: choose move direction
     virtual inline void stageDirection() { m_dir = Dir::NONE; }
     // events phase 2: re-evaluate move direction of this and/or other cells
+    virtual inline void postStage() {}
+    // events phase 3: re-evaluate move direction including indirect forces
     virtual inline void preMove() {}
-    // events phase 4: do various cell-specific actions
+    // events phase 5: do various cell-specific actions
     virtual inline void tick() {}
     // event to run when a signal dies and activates the cell
     virtual inline bool receiveSignal(Dir from = Dir::NONE) { return false; }
 
     void direct(Dir d, int8_t force = 1);
     void destroySelf();
+    void resetMove();
     virtual void confirmMove();
 
     // byte count after serialization

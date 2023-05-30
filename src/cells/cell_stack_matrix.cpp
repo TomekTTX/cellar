@@ -75,23 +75,28 @@ bool CellStackMatrix::posValid(Vec v) const {
 
 void CellStackMatrix::tick() {
     constexpr auto stageFunc = [](Cell &cell) { cell.stageDirection(); };
+    constexpr auto postStageFunc = [](Cell &cell) { cell.postStage(); };
     constexpr auto preMoveFunc = [](Cell &cell) { cell.preMove(); };
     constexpr auto tickFunc = [](Cell &cell) { cell.tick(); };
+    constexpr auto resetFunc = [](Cell &cell) { cell.resetMove(); };
 
     // Events phase 1 (stage)
     applyToAll(stageFunc);
 
-    // Events phase 2 (pre-move)
+    // Events phase 2 (post-stage)
+    applyToAll(postStageFunc);
+
+    // Events phase 3 (pre-move)
     applyToAll(preMoveFunc);
 
-    // Events phase 3 (move)
+    // Events phase 4 (move)
     while (performMove()) {
     }
 
-    // Events phase 4 (tick)
+    // Events phase 5 (tick)
     applyToAll(tickFunc);
 
-    // Events phase 5 (destroy)
+    // Events phase 6 (destroy)
     for (ValueType &stack : *this) {
         for (int i = 0; i < stack.size(); ++i) {
             if (stack[i]->toBeDestroyed()) {
@@ -99,6 +104,9 @@ void CellStackMatrix::tick() {
             }
         }
     }
+
+    // Events phase 7 (reset)
+    applyToAll(resetFunc);
 }
 
 void CellStackMatrix::pushCell(std::unique_ptr<Cell> &&cell) {

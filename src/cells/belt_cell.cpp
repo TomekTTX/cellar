@@ -29,7 +29,7 @@ void BeltCell::paintSelf(QPainter &painter, const QRect &rect) const {
     painter.restore();
 }
 
-void BeltCell::preMove() {
+void BeltCell::postStage() {
     for (Cell &cell : m_env->at(pos() + Dir::UP))
         cell.direct(moveDir);
 }

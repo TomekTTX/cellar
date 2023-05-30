@@ -8,6 +8,11 @@ void Cell::destroySelf() {
     m_destroyFlag = true;  // m_env->extractCell(*this);
 }
 
+void Cell::resetMove() {
+    m_dir = Dir::NONE;
+    m_force = 0;
+}
+
 QRect Cell::cellRect() const {
     return { CELL_SIZE * m_pos.x, CELL_SIZE * m_pos.y, CELL_SIZE, CELL_SIZE };
 }
@@ -67,9 +72,7 @@ void Cell::direct(Dir d, int8_t force) {
 }
 
 void Cell::confirmMove() {
-    // m_pos += m_dir;
-    m_dir = Dir::NONE;
-    m_force = 0;
+    resetMove();
 }
 
 uint Cell::serialSize() const {
@@ -114,6 +117,7 @@ std::unique_ptr<Cell> Cell::deserialize(const char **data) {
     case Type::Data: return makeDeserialized<DataCell>(data);
     case Type::Belt: return makeDeserialized<BeltCell>(data);
     case Type::Clock: return makeDeserialized<ClockCell>(data);
+    case Type::Ice: return makeDeserialized<IceCell>(data);
     default: return nullptr;
     }
 }

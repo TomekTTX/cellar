@@ -19,7 +19,7 @@ public:
 
     void paintSelf(QPainter &painter, const QRect &rect) const override;
 
-    void preMove() override;
+    void postStage() override;
     void tick() override;
     bool receiveSignal(Dir from = Dir::NONE) override;
 

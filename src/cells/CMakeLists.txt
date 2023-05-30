@@ -12,6 +12,7 @@ add_library(cells
     wire_cell.hpp wire_cell.cpp
     belt_cell.hpp belt_cell.cpp
     clock_cell.hpp clock_cell.cpp
+    ice_cell.hpp ice_cell.cpp
 )
 
 target_include_directories(cells

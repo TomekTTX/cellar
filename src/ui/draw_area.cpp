@@ -22,7 +22,8 @@ void DrawArea::testInit() {
         m_mat.emplaceCell<BeltCell>({ i + 1, 5 }, Dir::LEFT);
     for (int i = 0; i < 7; ++i)
         m_mat.emplaceCell<BeltCell>({ i, 7 }, Dir::RIGHT);
-    // m_mat.emplaceCell<DataCell>({ 0, 0 }, Color(255, 140, 140));
+    m_mat.emplaceCell<DataCell>({ 0, 0 }, Color(255, 140, 140));
+    m_mat.emplaceCell<IceCell>({ 0, 3 });
     // m_mat.emplaceCell<DataCell>({ 1, 3 }, Color(140, 255, 140));
     // m_mat.emplaceCell<DataCell>({ 2, 5 }, Color(140, 140, 255));
 }

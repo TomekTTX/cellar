@@ -38,7 +38,7 @@ public:
     // returns a sequence of cells from the stacks around a pos
     CellSeq around(Vec pos);
     // returns a sequence of cells from the stack at pos and following
-    // stacks in the direction d until the border of the matrix is hit
+    // stacks in the direction d until a border of the matrix is hit
     CellSeq scanline(Vec pos, Dir d);
 
     // returns reference to stack at (x, y)
