@@ -33,6 +33,7 @@ CellPalette::CellPalette(QWidget *parent) :
     addCell<ClockCell>(8);
     addCell<BeltCell>(Dir::LEFT);
     addCell<IceCell>();
+    addCell<WallCell>();
 }
 
 int CellPalette::pageCount() const {

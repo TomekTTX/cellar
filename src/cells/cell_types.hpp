@@ -8,6 +8,7 @@
 #include "empty_cell.hpp"
 #include "ice_cell.hpp"
 #include "signal_cell.hpp"
+#include "wall_cell.hpp"
 #include "wire_cell.hpp"
 
 #endif  // CELL_TYPES_HPP

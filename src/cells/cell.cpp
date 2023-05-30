@@ -118,6 +118,19 @@ std::unique_ptr<Cell> Cell::deserialize(const char **data) {
     case Type::Belt: return makeDeserialized<BeltCell>(data);
     case Type::Clock: return makeDeserialized<ClockCell>(data);
     case Type::Ice: return makeDeserialized<IceCell>(data);
+    case Type::Wall: return makeDeserialized<WallCell>(data);
+    case Type::Fan:
+    case Type::Piston:
+    case Type::PistonArm:
+    case Type::Duplicator:
+    case Type::Relayer:
+    case Type::Door:
+    case Type::LogicGate:
+    case Type::Void:
+    case Type::Teleport:
+    case Type::Transmitter:
+    case Type::Merger:
+    case Type::Splitter:
     default: return nullptr;
     }
 }
