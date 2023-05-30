@@ -1,6 +1,7 @@
 #include "signal_cell.hpp"
 
 #include "cell_stack_matrix.hpp"
+#include "util_funcs.hpp"
 
 SignalCell::SignalCell(Vec pos, CellStackMatrix *env) :
     Cell(pos, env) {}

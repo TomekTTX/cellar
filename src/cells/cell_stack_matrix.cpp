@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "empty_cell.hpp"
+#include "util_funcs.hpp"
 
 CellStackMatrix::CellStackMatrix(int64_t w, int64_t h) :
     m_w(w),
@@ -106,10 +107,21 @@ void CellStackMatrix::pushCell(std::unique_ptr<Cell> &&cell) {
     (*this)[cell->pos()].push_back(std::move(cell));
 }
 
+void CellStackMatrix::pushCell(std::unique_ptr<Cell> &&cell, Vec pos) {
+    if (cell == nullptr) return;
+    cell->setPos(pos);
+    pushCell(std::move(cell));
+}
+
+CellStackMatrix::ValueType::iterator CellStackMatrix::findCell(Cell &cell) {
+    ValueType &stack = (*this)[cell.pos()];
+    return std::find_if(stack.begin(), stack.end(), [&cell](auto &ptr) { return ptr.get() == &cell; });
+}
+
 std::unique_ptr<Cell> CellStackMatrix::extractCell(Cell &cell) {
     ValueType &stack = (*this)[cell.pos()];
 
-    auto it = std::find_if(stack.begin(), stack.end(), [&cell](auto &ptr) { return ptr.get() == &cell; });
+    auto it = findCell(cell);
     if (it == stack.end()) return nullptr;
 
     std::unique_ptr<Cell> extractedCell = std::move(*it);
@@ -133,6 +145,28 @@ bool CellStackMatrix::moveCell(Cell &cell, Vec targetPos) {
 
 bool CellStackMatrix::moveCell(std::unique_ptr<Cell> &cell, Vec targetPos) {
     return moveCell(*cell, targetPos);
+}
+
+bool CellStackMatrix::moveCellUp(Cell &cell) {
+    if (!posValid(cell.pos())) return false;
+
+    ValueType &stack = (*this)[cell.pos()];
+    auto it = findCell(cell);
+    if (it == stack.end() || it == stack.end() - 1) return false;
+
+    std::swap(*it, *(it + 1));
+    return true;
+}
+
+bool CellStackMatrix::moveCellDown(Cell &cell) {
+    if (!posValid(cell.pos())) return false;
+
+    ValueType &stack = (*this)[cell.pos()];
+    auto it = findCell(cell);
+    if (it == stack.end() || it == stack.begin()) return false;
+
+    std::swap(*it, *(it - 1));
+    return true;
 }
 
 int CellStackMatrix::performMove() {

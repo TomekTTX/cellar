@@ -18,6 +18,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     new QShortcut(Qt::Key_Space, this, SLOT(tick()));
     new QShortcut(Qt::Key_Delete, m_drawarea, SLOT(deleteSelected()));
+    new QShortcut(Qt::Key_Right, m_drawarea, SLOT(moveSelectedUp()));
+    new QShortcut(Qt::Key_Left, m_drawarea, SLOT(moveSelectedDown()));
+    new QShortcut(Qt::Key_X, m_drawarea, SLOT(cut()));
+    new QShortcut(Qt::Key_C, m_drawarea, SLOT(copy()));
+    new QShortcut(Qt::Key_V, m_drawarea, SLOT(paste()));
 }
 
 MainWindow::~MainWindow() {

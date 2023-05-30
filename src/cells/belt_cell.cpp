@@ -1,6 +1,7 @@
 #include "belt_cell.hpp"
 
 #include "cell_stack_matrix.hpp"
+#include "util_funcs.hpp"
 
 BeltCell::BeltCell(Vec pos, CellStackMatrix *env, Dir moveDir) :
     Cell(pos, env),
@@ -23,7 +24,6 @@ void BeltCell::paintSelf(QPainter &painter, const QRect &rect) const {
     for (int i = -2; i < 10; ++i) {
         const int xOff = tickOffset + i * iMult;
         painter.drawRect(sliceRect.adjusted(xOff, 0, xOff, 0));
-        // painter.drawRect(rect.x() + tickMult * m_animationTick + 6 * i, rect.y() + 4, 2, rect.height() - 8);
     }
 
     painter.restore();

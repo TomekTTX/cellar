@@ -3,6 +3,8 @@
 #include <bitset>
 #include <variant>
 
+#include "util_funcs.hpp"
+
 enum class DataType : int8_t { EMPTY, BYTE, COLOR, INTEGER, STRING, COUNT };
 
 struct DataPainter {

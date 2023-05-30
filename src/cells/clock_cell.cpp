@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "cell_stack_matrix.hpp"
+#include "util_funcs.hpp"
 
 ClockCell::ClockCell(Vec pos, CellStackMatrix *env, uint delay) :
     Cell(pos, env),

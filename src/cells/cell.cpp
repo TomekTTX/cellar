@@ -2,6 +2,7 @@
 
 #include "cell_stack_matrix.hpp"
 #include "cell_types.hpp"
+#include "util_funcs.hpp"
 
 void Cell::destroySelf() {
     m_destroyFlag = true;  // m_env->extractCell(*this);
@@ -96,7 +97,7 @@ void Cell::deserializeFrom(const char **data) {
 }
 
 template <typename T>
-std::unique_ptr<T> makeDeserialized(const char **data) {
+std::unique_ptr<T> Cell::makeDeserialized(const char **data) {
     std::unique_ptr<T> cell = std::make_unique<T>();
     cell->deserializeFrom(data);
     return cell;
@@ -118,6 +119,7 @@ std::unique_ptr<Cell> Cell::deserialize(const char **data) {
 }
 
 std::unique_ptr<Cell> Cell::deserialize(const std::vector<char> &bytes) {
+    if (bytes.empty()) return nullptr;
     const char *data = bytes.data();
     return deserialize(&data);
 }

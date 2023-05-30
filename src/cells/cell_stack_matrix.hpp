@@ -62,6 +62,9 @@ public:
         (*this)[pos].push_back(std::make_unique<T>(pos, this, args...));
     }
     void pushCell(std::unique_ptr<Cell> &&cell);
+    void pushCell(std::unique_ptr<Cell> &&cell, Vec pos);
+
+    ValueType::iterator findCell(Cell &cell);
 
     // finds and detaches the given cell from the matrix
     std::unique_ptr<Cell> extractCell(Cell &cell);
@@ -70,6 +73,9 @@ public:
     // finds the given cell and moves it to targetPos
     bool moveCell(Cell &cell, Vec targetPos);
     bool moveCell(std::unique_ptr<Cell> &cell, Vec targetPos);
+
+    bool moveCellUp(Cell &cell);
+    bool moveCellDown(Cell &cell);
 
     std::vector<char> serialize() const;
     static CellStackMatrix deserialize(const char *data);

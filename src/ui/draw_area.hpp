@@ -15,6 +15,7 @@ private:
     StackViewer *m_sv;
     CellPalette *m_palette;
     Cell *m_selectedCell = nullptr;
+    Cell::Serialized m_cellCopy;
 
 public:
     explicit DrawArea(QWidget *parent = nullptr);
@@ -29,6 +30,11 @@ public:
 public slots:
     void select(Cell *cell);
     void deleteSelected();
+    void moveSelectedUp();
+    void moveSelectedDown();
+    void cut();
+    void copy();
+    void paste();
 
 protected:
     void paintEvent(QPaintEvent *event) override;

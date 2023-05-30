@@ -4,7 +4,6 @@
 #include <QPainter>
 
 #include "positions.hpp"
-#include "util_funcs.hpp"
 
 constexpr int CELL_SIZE = 40;
 
@@ -13,7 +12,7 @@ class CellStackMatrix;
 class Cell {
 private:
     // if this flag is set, the cell should not be accessed anymore
-    // and should be destroyed after the current tick
+    // it will be destroyed in events phase 5
     bool m_destroyFlag = false;
     // flag for showing the selection mark on the cell
     bool m_selected = false;
@@ -30,13 +29,14 @@ protected:
 
 public:
     enum class Type : int16_t { Empty, Wire, Signal, Data, Belt, Clock };
+    using Serialized = std::vector<char>;
 
     Cell() = default;
     Cell(Vec pos, CellStackMatrix *env) :
         m_pos(pos),
         m_env(env) {}
 
-    virtual Type type() const = 0;  // inline Type type() const override { return Type::; }
+    virtual Type type() const = 0;
     inline Vec pos() const { return m_pos; }
     inline Dir dir() const { return m_dir; }
     inline Vec targetPos() const { return pos() + dir(); }
@@ -53,7 +53,9 @@ public:
     // check if the cell should be removed in events phase 5
     inline bool toBeDestroyed() const { return m_destroyFlag; }
 
+    // paint self at the default location (cellRect())
     void paint(QPainter &painter) const;
+    // paint self at the specified rect
     void paint(QPainter &painter, const QRect &rect) const;
 
     // position setter
@@ -62,6 +64,7 @@ public:
     inline void setEnv(CellStackMatrix *mat) { m_env = mat; }
     // selected setter
     inline void setSelected(bool v) { m_selected = v; }
+
     // events phase 1: choose move direction
     virtual inline void stageDirection() { m_dir = Dir::NONE; }
     // events phase 2: re-evaluate move direction of this and/or other cells
@@ -75,14 +78,20 @@ public:
     void destroySelf();
     virtual void confirmMove();
 
+    // byte count after serialization
     virtual uint serialSize() const;
+    // serialization functions
     virtual std::vector<char> serialize() const;
-    virtual void deserializeFrom(const char **data);
     static std::unique_ptr<Cell> deserialize(const char **data);
     static std::unique_ptr<Cell> deserialize(const std::vector<char> &bytes);
 
 protected:
     virtual void paintSelf(QPainter &painter, const QRect &rect) const = 0;
+    virtual void deserializeFrom(const char **data);
+
+private:
+    template <typename T>
+    static std::unique_ptr<T> makeDeserialized(const char **data);
 };
 
 #endif  // CELL_HPP

@@ -58,7 +58,7 @@ void DrawArea::mouseDoubleClickEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         const auto point = event->pos();
         const Vec cellPos = m_mat.mapPosToCell(point.x(), point.y());
-        if (m_mat.posValid(cellPos)) {
+        if (m_mat.posValid(cellPos) && !m_mat[cellPos].empty()) {
             select(m_mat[cellPos].back().get());
         } else
             select(nullptr);
@@ -83,6 +83,39 @@ void DrawArea::deleteSelected() {
         m_selectedCell = nullptr;
     }
     select(nullptr);
+}
+
+void DrawArea::moveSelectedUp() {
+    if (!m_selectedCell) return;
+    if (m_mat.moveCellUp(*m_selectedCell)) {
+        repaint();
+        m_sv->repaint();
+    }
+}
+
+void DrawArea::moveSelectedDown() {
+    if (!m_selectedCell) return;
+    if (m_mat.moveCellDown(*m_selectedCell)) {
+        repaint();
+        m_sv->repaint();
+    }
+}
+
+void DrawArea::cut() {
+    copy();
+    deleteSelected();
+}
+
+void DrawArea::copy() {
+    if (!m_selectedCell) return;
+    m_cellCopy = m_selectedCell->serialize();
+}
+
+void DrawArea::paste() {
+    if (!m_selectedCell) return;
+    m_mat.pushCell(Cell::deserialize(m_cellCopy), m_selectedCell->pos());
+    repaint();
+    m_sv->repaint();
 }
 
 void DrawArea::paintEvent(QPaintEvent *event) {
