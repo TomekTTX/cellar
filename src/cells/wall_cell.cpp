@@ -11,7 +11,6 @@ void WallCell::paintSelf(QPainter &painter, const QRect &rect) const {
     painter.setClipRect(rect);
     painter.setPen(Qt::white);
 
-
     const QPoint origin = rect.topLeft();
     const int size = rect.width();
     const int interval = size / 4;

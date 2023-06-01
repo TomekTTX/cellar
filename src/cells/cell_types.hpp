@@ -6,6 +6,7 @@
 #include "clock_cell.hpp"
 #include "data_cell.hpp"
 #include "empty_cell.hpp"
+#include "fan_cell.hpp"
 #include "ice_cell.hpp"
 #include "signal_cell.hpp"
 #include "wall_cell.hpp"

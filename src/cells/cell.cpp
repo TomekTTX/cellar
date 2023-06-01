@@ -5,7 +5,7 @@
 #include "util_funcs.hpp"
 
 void Cell::destroySelf() {
-    m_destroyFlag = true;  // m_env->extractCell(*this);
+    m_destroyFlag = true;
 }
 
 void Cell::resetMove() {
@@ -42,10 +42,9 @@ void Cell::paint(QPainter &painter, const QRect &rect) const {
     paintSelf(painter, rect);
 
     if (m_selected) {
-        const QPoint offset{ rect.x(), rect.y() };
         painter.setPen(Qt::black);
         painter.setBrush(QColor(255, 160, 10));
-        for (const QPolygon &poly : polygons(offset))
+        for (const QPolygon &poly : polygons(rect.topLeft()))
             painter.drawPolygon(poly);
     }
 }
@@ -119,7 +118,7 @@ std::unique_ptr<Cell> Cell::deserialize(const char **data) {
     case Type::Clock: return makeDeserialized<ClockCell>(data);
     case Type::Ice: return makeDeserialized<IceCell>(data);
     case Type::Wall: return makeDeserialized<WallCell>(data);
-    case Type::Fan:
+    case Type::Fan: return makeDeserialized<FanCell>(data);
     case Type::Piston:
     case Type::PistonArm:
     case Type::Duplicator:

@@ -6,6 +6,7 @@
 class BeltCell : public Cell {
 private:
     static constexpr int M_ANIM_LENGTH = 3;
+    static constexpr int8_t M_BELT_FORCE = 2;
     int m_animationTick = 0;
 
 public:
@@ -20,6 +21,7 @@ public:
     void paintSelf(QPainter &painter, const QRect &rect) const override;
 
     void postStage() override;
+    void preMove() override;
     void tick() override;
     bool receiveSignal(Dir from = Dir::NONE) override;
 

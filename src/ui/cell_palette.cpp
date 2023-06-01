@@ -34,6 +34,10 @@ CellPalette::CellPalette(QWidget *parent) :
     addCell<BeltCell>(Dir::LEFT);
     addCell<IceCell>();
     addCell<WallCell>();
+    addCell<FanCell>(Dir::UP);
+    addCell<FanCell>(Dir::LEFT);
+    addCell<FanCell>(Dir::DOWN);
+    addCell<FanCell>(Dir::RIGHT);
 }
 
 int CellPalette::pageCount() const {

@@ -31,7 +31,15 @@ void BeltCell::paintSelf(QPainter &painter, const QRect &rect) const {
 
 void BeltCell::postStage() {
     for (Cell &cell : m_env->at(pos() + Dir::UP))
-        cell.direct(moveDir);
+        cell.direct(moveDir, M_BELT_FORCE);
+}
+
+void BeltCell::preMove() {
+    for (Cell &cell : m_env->at(pos() + Dir::DOWN)) {
+        if (cell.dir() == Dir::UP) {
+            cell.direct(moveDir, M_BELT_FORCE);
+        }
+    }
 }
 
 void BeltCell::tick() {

@@ -14,6 +14,7 @@ add_library(cells
     clock_cell.hpp clock_cell.cpp
     ice_cell.hpp ice_cell.cpp
     wall_cell.hpp wall_cell.cpp
+    fan_cell.hpp fan_cell.cpp
 )
 
 target_include_directories(cells
